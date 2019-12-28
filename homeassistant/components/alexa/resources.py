@@ -216,11 +216,14 @@ class AlexaCapabilityResource:
         labels = []
         for label in resources:
             if label in AlexaGlobalCatalog.__dict__.values():
-                label = {"@type": "asset", "value": {"assetId": label}}
+                label = [{"@type": "asset", "value": {"assetId": label}}]
             else:
-                label = {"@type": "text", "value": {"text": label, "locale": "en-US"}}
+                label = [
+                    {"@type": "text", "value": {"text": label, "locale": "en-GB"}},
+                    {"@type": "text", "value": {"text": label, "locale": "en-US"}},
+                ]
 
-            labels.append(label)
+            labels.extend(label)
 
         return {"friendlyNames": labels}
 

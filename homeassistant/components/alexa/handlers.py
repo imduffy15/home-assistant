@@ -78,7 +78,7 @@ async def async_api_discovery(hass, config, directive, context):
     Async friendly.
     """
     discovery_endpoints = [
-        alexa_entity.serialize_discovery()
+        await alexa_entity.serialize_discovery()
         for alexa_entity in async_get_entities(hass, config)
         if config.should_expose(alexa_entity.entity_id)
     ]
@@ -976,7 +976,12 @@ async def async_api_set_mode(hass, config, directive, context):
             service = cover.SERVICE_OPEN_COVER
         elif position == "custom":
             service = cover.SERVICE_STOP_COVER
-
+    elif instance == f"{light.DOMAIN}.{light.ATTR_EFFECT}":
+        service = light.SERVICE_TURN_ON
+        data[light.ATTR_EFFECT] = mode
+    elif instance == f"{light.DOMAIN}.{light.ATTR_PROFILE}":
+        service = light.SERVICE_TURN_ON
+        data[light.ATTR_PROFILE] = mode
     else:
         msg = "Entity does not support directive"
         raise AlexaInvalidDirectiveError(msg)

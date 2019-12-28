@@ -258,7 +258,7 @@ class AlexaEntity:
             for prop in interface.serialize_properties():
                 yield prop
 
-    def serialize_discovery(self):
+    async def serialize_discovery(self):
         """Serialize the entity for discovery."""
         return {
             "displayCategories": self.display_categories(),
@@ -267,7 +267,7 @@ class AlexaEntity:
             "friendlyName": self.friendly_name(),
             "description": self.description(),
             "manufacturerName": "Home Assistant",
-            "capabilities": [i.serialize_discovery() for i in self.interfaces()],
+            "capabilities": [await i.serialize_discovery() for i in self.interfaces()],
         }
 
 
@@ -393,7 +393,9 @@ class CoverCapabilities(AlexaEntity):
             )
         elif supported & (cover.SUPPORT_CLOSE | cover.SUPPORT_OPEN):
             yield AlexaModeController(
-                self.entity, instance=f"{cover.DOMAIN}.{cover.ATTR_POSITION}"
+                self.entity,
+                hass=self.hass,
+                instance=f"{cover.DOMAIN}.{cover.ATTR_POSITION}",
             )
         if supported & cover.SUPPORT_SET_TILT_POSITION:
             yield AlexaRangeController(
@@ -422,6 +424,14 @@ class LightCapabilities(AlexaEntity):
             yield AlexaColorController(self.entity)
         if supported & light.SUPPORT_COLOR_TEMP:
             yield AlexaColorTemperatureController(self.entity)
+
+        yield AlexaModeController(
+            self.entity, hass=self.hass, instance=f"{light.DOMAIN}.{light.ATTR_EFFECT}"
+        )
+
+        yield AlexaModeController(
+            self.entity, hass=self.hass, instance=f"{light.DOMAIN}.{light.ATTR_PROFILE}"
+        )
 
         yield AlexaEndpointHealth(self.hass, self.entity)
         yield Alexa(self.hass)
@@ -452,7 +462,9 @@ class FanCapabilities(AlexaEntity):
             )
         if supported & fan.SUPPORT_DIRECTION:
             yield AlexaModeController(
-                self.entity, instance=f"{fan.DOMAIN}.{fan.ATTR_DIRECTION}"
+                self.entity,
+                hass=self.hass,
+                instance=f"{fan.DOMAIN}.{fan.ATTR_DIRECTION}",
             )
 
         yield AlexaEndpointHealth(self.hass, self.entity)

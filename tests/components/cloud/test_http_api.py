@@ -790,7 +790,13 @@ async def test_list_alexa_entities(hass, hass_ws_client, setup_api, mock_cloud_l
     assert response["result"][0] == {
         "entity_id": "light.kitchen",
         "display_categories": ["LIGHT"],
-        "interfaces": ["Alexa.PowerController", "Alexa.EndpointHealth", "Alexa"],
+        "interfaces": [
+            "Alexa.PowerController",
+            "Alexa.ModeController",
+            "Alexa.ModeController",
+            "Alexa.EndpointHealth",
+            "Alexa",
+        ],
     }
 
 

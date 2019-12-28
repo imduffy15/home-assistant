@@ -111,7 +111,7 @@ class AlexaCapability:
         return None
 
     @staticmethod
-    def capability_resources():
+    async def capability_resources():
         """Return the capability object.
 
         Applicable to ToggleController, RangeController, and ModeController interfaces.
@@ -154,7 +154,7 @@ class AlexaCapability:
         """Return the supportedOperations object."""
         return []
 
-    def serialize_discovery(self):
+    async def serialize_discovery(self):
         """Serialize according to the Discovery API."""
         result = {"type": "AlexaInterface", "interface": self.name(), "version": "3"}
 
@@ -182,7 +182,7 @@ class AlexaCapability:
         if supports_deactivation is not None:
             result["supportsDeactivation"] = supports_deactivation
 
-        capability_resources = self.capability_resources()
+        capability_resources = await self.capability_resources()
         if capability_resources:
             result["capabilityResources"] = capability_resources
 
@@ -906,12 +906,13 @@ class AlexaModeController(AlexaCapability):
     https://developer.amazon.com/docs/device-apis/alexa-modecontroller.html
     """
 
-    def __init__(self, entity, instance, non_controllable=False):
+    def __init__(self, entity, instance, hass=None, non_controllable=False):
         """Initialize the entity."""
         super().__init__(entity, instance)
         self._resource = None
         self._semantics = None
         self.properties_non_controllable = lambda: non_controllable
+        self.hass = hass
 
     def name(self):
         """Return the Alexa API name of this interface."""
@@ -953,6 +954,10 @@ class AlexaModeController(AlexaCapability):
             ):
                 return f"{cover.ATTR_POSITION}.{mode}"
 
+        if self.instance == f"{light.DOMAIN}.effect":
+            mode = self.entity.attributes.get(light.ATTR_EFFECT)
+            return f"{mode}"
+
         return None
 
     def configuration(self):
@@ -962,7 +967,7 @@ class AlexaModeController(AlexaCapability):
 
         return None
 
-    def capability_resources(self):
+    async def capability_resources(self):
         """Return capabilityResources object."""
 
         # Fan Direction Resource
@@ -992,6 +997,29 @@ class AlexaModeController(AlexaCapability):
                 [AlexaGlobalCatalog.VALUE_CLOSE],
             )
             self._resource.add_mode(f"{cover.ATTR_POSITION}.custom", ["Custom"])
+            return self._resource.serialize_capability_resources()
+
+        if self.instance == f"{light.DOMAIN}.{light.ATTR_EFFECT}":
+            self._resource = AlexaModeResource(["Effect"], False)
+
+            effect_list = self.entity.attributes.get(light.ATTR_EFFECT_LIST, 0)
+            if effect_list:
+                for effect in effect_list:
+                    self._resource.add_mode(f"{effect}", [f"{effect}"])
+
+            return self._resource.serialize_capability_resources()
+
+        if self.instance == f"{light.DOMAIN}.{light.ATTR_PROFILE}":
+            self._resource = AlexaModeResource(["Profile"], False)
+
+            await light.Profiles.load_profiles(self.hass)
+            # pylint: disable=protected-access
+            profile_list = light.Profiles._all.keys()
+
+            if profile_list:
+                for profile in profile_list:
+                    self._resource.add_mode(f"{profile}", [f"{profile}"])
+
             return self._resource.serialize_capability_resources()
 
         return None
@@ -1085,7 +1113,7 @@ class AlexaRangeController(AlexaCapability):
 
         return None
 
-    def capability_resources(self):
+    async def capability_resources(self):
         """Return capabilityResources object."""
 
         # Fan Speed Resources
@@ -1233,7 +1261,7 @@ class AlexaToggleController(AlexaCapability):
 
         return None
 
-    def capability_resources(self):
+    async def capability_resources(self):
         """Return capabilityResources object."""
 
         # Fan Oscillating Resource

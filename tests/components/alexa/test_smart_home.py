@@ -197,7 +197,11 @@ async def test_light(hass):
     assert appliance["displayCategories"][0] == "LIGHT"
     assert appliance["friendlyName"] == "Test light 1"
     assert_endpoint_capabilities(
-        appliance, "Alexa.PowerController", "Alexa.EndpointHealth", "Alexa"
+        appliance,
+        "Alexa.PowerController",
+        "Alexa.ModeController",
+        "Alexa.EndpointHealth",
+        "Alexa",
     )
 
     await assert_power_controller_works(
@@ -222,6 +226,7 @@ async def test_dimmable_light(hass):
         appliance,
         "Alexa.BrightnessController",
         "Alexa.PowerController",
+        "Alexa.ModeController",
         "Alexa.EndpointHealth",
         "Alexa",
     )
@@ -264,6 +269,7 @@ async def test_color_light(hass):
         "Alexa.BrightnessController",
         "Alexa.PowerController",
         "Alexa.ColorController",
+        "Alexa.ModeController",
         "Alexa.ColorTemperatureController",
         "Alexa.EndpointHealth",
         "Alexa",
@@ -609,7 +615,8 @@ async def test_direction_fan(hass):
         "value": "direction.forward",
         "modeResources": {
             "friendlyNames": [
-                {"@type": "text", "value": {"text": "forward", "locale": "en-US"}}
+                {"@type": "text", "value": {"text": "forward", "locale": "en-GB"}},
+                {"@type": "text", "value": {"text": "forward", "locale": "en-US"}},
             ]
         },
     } in supported_modes
@@ -617,7 +624,8 @@ async def test_direction_fan(hass):
         "value": "direction.reverse",
         "modeResources": {
             "friendlyNames": [
-                {"@type": "text", "value": {"text": "reverse", "locale": "en-US"}}
+                {"@type": "text", "value": {"text": "reverse", "locale": "en-GB"}},
+                {"@type": "text", "value": {"text": "reverse", "locale": "en-US"}},
             ]
         },
     } in supported_modes
@@ -2129,7 +2137,11 @@ async def test_entity_config(hass):
     assert appliance["friendlyName"] == "Config name"
     assert appliance["description"] == "Config description via Home Assistant"
     assert_endpoint_capabilities(
-        appliance, "Alexa.PowerController", "Alexa.EndpointHealth", "Alexa"
+        appliance,
+        "Alexa.PowerController",
+        "Alexa.ModeController",
+        "Alexa.EndpointHealth",
+        "Alexa",
     )
 
     scene = msg["payload"]["endpoints"][1]

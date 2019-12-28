@@ -145,7 +145,7 @@ async def async_send_add_or_update_message(hass, config, entity_ids):
             continue
 
         alexa_entity = ENTITY_ADAPTERS[domain](hass, config, hass.states.get(entity_id))
-        endpoints.append(alexa_entity.serialize_discovery())
+        endpoints.append(await alexa_entity.serialize_discovery())
 
     payload = {"endpoints": endpoints, "scope": {"type": "BearerToken", "token": token}}
 
