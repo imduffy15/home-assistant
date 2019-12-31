@@ -148,7 +148,10 @@ class HueFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         host is already configured and delegate to the import step if not.
         """
         # Filter out non-Hue bridges #1
-        if discovery_info[ssdp.ATTR_UPNP_MANUFACTURER_URL] != HUE_MANUFACTURERURL:
+        if (
+            ssdp.ATTR_UPNP_MANUFACTURER_URL not in discovery_info
+            or discovery_info[ssdp.ATTR_UPNP_MANUFACTURER_URL] != HUE_MANUFACTURERURL
+        ):
             return self.async_abort(reason="not_hue_bridge")
 
         # Filter out non-Hue bridges #2
