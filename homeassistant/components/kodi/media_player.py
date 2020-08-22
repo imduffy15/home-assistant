@@ -251,7 +251,6 @@ class KodiEntity(MediaPlayerEntity):
 
     def __init__(self, connection, kodi, name, uid, version):
         """Initialize the Kodi entity."""
-        self._ignored_sources = []
         self._content_mapping = {}
         self._connection = connection
         self._kodi = kodi
@@ -416,7 +415,7 @@ class KodiEntity(MediaPlayerEntity):
     async def _async_refresh_channels(self):
         """Refresh source ahd channel list."""
         if not self._source_list:
-            channels = await self._kodi.call_method(
+            for channel in await self._kodi.call_method(
                 "PVR.GetChannels",
                 channelgroupid="alltv",
                 properties=[
@@ -430,15 +429,15 @@ class KodiEntity(MediaPlayerEntity):
                     "isrecording",
                 ],
                 limits={"start": 0},
-            )
-            for channel in channels.get("channels", []):
+            ).get("channels", []):
                 self._content_mapping[channel["label"]] = channel["channelid"]
+
             self._source_list = []
             if not self._content_mapping:
                 return False
             for key in self._content_mapping:
-                if key not in self._ignored_sources:
-                    self._source_list.append(key)
+                self._source_list.append(key)
+
         return True
 
     async def async_update(self):
@@ -488,12 +487,6 @@ class KodiEntity(MediaPlayerEntity):
                 self._source = self._item.get("label")
         else:
             self._reset_state([])
-
-    def _get_source(self):
-        """Return the name of the source."""
-        for key, value in self._content_mapping.items():
-            if value == self._content_uri:
-                return key
 
     @property
     def name(self):
