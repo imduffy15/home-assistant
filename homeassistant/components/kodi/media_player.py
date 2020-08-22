@@ -21,6 +21,7 @@ from homeassistant.components.media_player.const import (
     SUPPORT_PLAY_MEDIA,
     SUPPORT_PREVIOUS_TRACK,
     SUPPORT_SEEK,
+    SUPPORT_SELECT_SOURCE,
     SUPPORT_SHUFFLE_SET,
     SUPPORT_STOP,
     SUPPORT_TURN_OFF,
@@ -117,6 +118,7 @@ SUPPORT_KODI = (
     | SUPPORT_VOLUME_STEP
     | SUPPORT_TURN_OFF
     | SUPPORT_TURN_ON
+    | SUPPORT_SELECT_SOURCE
 )
 
 
@@ -249,6 +251,8 @@ class KodiEntity(MediaPlayerEntity):
 
     def __init__(self, connection, kodi, name, uid, version):
         """Initialize the Kodi entity."""
+        self._ignored_sources = []
+        self._content_mapping = {}
         self._connection = connection
         self._kodi = kodi
         self._name = name
@@ -260,6 +264,9 @@ class KodiEntity(MediaPlayerEntity):
         self._app_properties = {}
         self._media_position_updated_at = None
         self._media_position = None
+        self._source = None
+        self._source_list = []
+        self._content_uri = None
 
     def _reset_state(self, players=None):
         self._players = players
@@ -343,6 +350,16 @@ class KodiEntity(MediaPlayerEntity):
 
         return STATE_PLAYING
 
+    @property
+    def source(self):
+        """Return the source of the device."""
+        return self._source
+
+    @property
+    def source_list(self):
+        """List of available input sources."""
+        return self._source_list
+
     async def async_added_to_hass(self):
         """Connect the websocket if needed."""
         if not self._connection.can_subscribe:
@@ -396,6 +413,34 @@ class KodiEntity(MediaPlayerEntity):
         self._connection.server.System.OnRestart = self.async_on_quit
         self._connection.server.System.OnSleep = self.async_on_quit
 
+    async def _async_refresh_channels(self):
+        """Refresh source ahd channel list."""
+        if not self._source_list:
+            channels = await self._kodi.call_method(
+                "PVR.GetChannels",
+                channelgroupid="alltv",
+                properties=[
+                    "thumbnail",
+                    "channeltype",
+                    "hidden",
+                    "locked",
+                    "channel",
+                    "lastplayed",
+                    "broadcastnow",
+                    "isrecording",
+                ],
+                limits={"start": 0},
+            )
+            for channel in channels.get("channels", []):
+                self._content_mapping[channel["label"]] = channel["channelid"]
+            self._source_list = []
+            if not self._content_mapping:
+                return False
+            for key in self._content_mapping:
+                if key not in self._ignored_sources:
+                    self._source_list.append(key)
+        return True
+
     async def async_update(self):
         """Retrieve latest state."""
         if not self._connection.connected:
@@ -407,6 +452,8 @@ class KodiEntity(MediaPlayerEntity):
         if self._kodi_is_off:
             self._reset_state()
             return
+
+        await self._async_refresh_channels()
 
         if self._players:
             self._app_properties = await self._kodi.get_application_properties(
@@ -437,8 +484,16 @@ class KodiEntity(MediaPlayerEntity):
                     "episode",
                 ],
             )
+            if self._item.get("type") == MEDIA_TYPE_CHANNEL:
+                self._source = self._item.get("label")
         else:
             self._reset_state([])
+
+    def _get_source(self):
+        """Return the name of the source."""
+        for key, value in self._content_mapping.items():
+            if value == self._content_uri:
+                return key
 
     @property
     def name(self):
@@ -579,6 +634,12 @@ class KodiEntity(MediaPlayerEntity):
         self.hass.bus.async_fire(EVENT_TURN_OFF, {ATTR_ENTITY_ID: self.entity_id})
 
     @cmd
+    async def async_select_source(self, source):
+        """Source change the media player."""
+        if source in self._content_mapping:
+            await self.async_play_media(MEDIA_TYPE_CHANNEL, source)
+
+    @cmd
     async def async_volume_up(self):
         """Volume up the media player."""
         await self._kodi.volume_up()
@@ -643,19 +704,21 @@ class KodiEntity(MediaPlayerEntity):
             partial_match_channel_id = None
             perfect_match_channel_id = None
 
-            channels = await self.async_get_channels()
-
-            for channel in channels.get("channels", []):
-                if media_id == channel["channelid"]:
-                    perfect_match_channel_id = channel["channelid"]
+            for channel_name, channel_id in self._content_mapping.items():
+                if media_id == channel_id:
+                    perfect_match_channel_id = channel_id
                     continue
 
-                if media_type_lower == channel["label"].lower():
-                    perfect_match_channel_id = channel["channelid"]
+                if media_id == channel_name:
+                    perfect_match_channel_id = channel_id
                     continue
 
-                if media_type_lower in channel["label"].lower():
-                    partial_match_channel_id = channel["channelid"]
+                if media_type_lower == channel_name.lower():
+                    perfect_match_channel_id = channel_id
+                    continue
+
+                if media_type_lower in channel_name.lower():
+                    partial_match_channel_id = channel_id
 
             if perfect_match_channel_id is not None:
                 _LOGGER.info(
@@ -810,12 +873,6 @@ class KodiEntity(MediaPlayerEntity):
                 album_name,
             )
             return None
-
-    async def async_get_channels(self, channel_group_id="alltv"):
-        """Get channels list."""
-        return await self._connection.server.PVR.GetChannels(
-            {"channelgroupid": channel_group_id}
-        )
 
     @staticmethod
     def _find(key_word, words):
