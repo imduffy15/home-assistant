@@ -1805,7 +1805,7 @@ pysnmp==4.4.12
 pysoma==0.0.10
 
 # homeassistant.components.spc
-pyspcwebgw==0.4.0
+git+https://github.com/imduffy15/pyspcwebgw.git#egg=pyspcwebgw
 
 # homeassistant.components.squeezebox
 pysqueezebox==0.5.5
