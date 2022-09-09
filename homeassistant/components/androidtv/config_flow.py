@@ -24,6 +24,7 @@ from .const import (
     CONF_EXCLUDE_UNNAMED_APPS,
     CONF_GET_SOURCES,
     CONF_SCREENCAP,
+    CONF_SOURCE_PROVIDER,
     CONF_STATE_DETECTION_RULES,
     CONF_TURN_OFF_COMMAND,
     CONF_TURN_ON_COMMAND,
@@ -33,6 +34,7 @@ from .const import (
     DEFAULT_GET_SOURCES,
     DEFAULT_PORT,
     DEFAULT_SCREENCAP,
+    DEFAULT_SOURCE_PROVIDER,
     DEVICE_CLASSES,
     DOMAIN,
     PROP_ETHMAC,
@@ -231,6 +233,10 @@ class OptionsFlowHandler(OptionsFlow):
                     CONF_GET_SOURCES,
                     default=options.get(CONF_GET_SOURCES, DEFAULT_GET_SOURCES),
                 ): bool,
+                vol.Optional(
+                    CONF_SOURCE_PROVIDER,
+                    default=options.get(CONF_SOURCE_PROVIDER, DEFAULT_SOURCE_PROVIDER),
+                ): str,
                 vol.Optional(
                     CONF_EXCLUDE_UNNAMED_APPS,
                     default=options.get(
