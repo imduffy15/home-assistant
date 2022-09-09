@@ -10,6 +10,7 @@ from typing import Any, Concatenate, ParamSpec, TypeVar
 from androidtv.constants import APPS, KEYS
 from androidtv.exceptions import LockNotAcquiredException
 import voluptuous as vol
+import watchhub
 
 from homeassistant.components import persistent_notification
 from homeassistant.components.media_player import (
@@ -19,6 +20,7 @@ from homeassistant.components.media_player import (
     MediaPlayerState,
 )
 from homeassistant.config_entries import ConfigEntry
+
 from homeassistant.const import (
     ATTR_COMMAND,
     ATTR_CONNECTIONS,
@@ -28,6 +30,7 @@ from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
 )
+
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv, entity_platform
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC
@@ -48,9 +51,12 @@ from .const import (
     DEFAULT_EXCLUDE_UNNAMED_APPS,
     DEFAULT_GET_SOURCES,
     DEFAULT_SCREENCAP,
+    DEFAULT_SOURCE_PROVIDER,
     DEVICE_ANDROIDTV,
     DOMAIN,
     SIGNAL_CONFIG_ENTITY,
+    SOURCE_PROVIDER_INSTALLED_APPS,
+    SOURCE_PROVIDER_RUNNING_APPS,
 )
 
 _ADBDeviceT = TypeVar("_ADBDeviceT", bound="ADBDevice")
@@ -242,6 +248,7 @@ class ADBDevice(MediaPlayerEntity):
         self._screencap = DEFAULT_SCREENCAP
         self.turn_on_command = None
         self.turn_off_command = None
+        self._source_provider = DEFAULT_SOURCE_PROVIDER
 
         # ADB exceptions to catch
         if not aftv.adb_server_ip:
@@ -285,7 +292,7 @@ class ADBDevice(MediaPlayerEntity):
         self.turn_off_command = options.get(CONF_TURN_OFF_COMMAND)
         self.turn_on_command = options.get(CONF_TURN_ON_COMMAND)
 
-    async def async_added_to_hass(self) -> None:
+    async def async_added_to_hass(self):
         """Set config parameter when add to hass."""
         await super().async_added_to_hass()
         self._process_config()
@@ -444,6 +451,35 @@ class ADBDevice(MediaPlayerEntity):
 
         await self.aftv.adb_push(local_path, device_path)
 
+    async def async_play_media(self, media_type: str, media_id: str, **kwargs):
+        handler = getattr(self, f"async_play_media_{media_type}")
+        if handler:
+            return await handler(media_id)
+        else:
+            _LOGGER.error("No handler for media type %s", media_type)
+
+    async def async_play_media_imdb(self, media_id):
+        streams = await watchhub.lookup(media_id)
+        if "netflix" in streams:
+            return await self.async_play_media_netflix(streams.get("netflix"))
+        if "amazon_prime_video" in streams:
+            return await self.async_play_media_amazon_prime_video(
+                streams.get("amazon_prime_video")
+            )
+
+    @adb_decorator()
+    async def async_play_media_netflix(self, media_id):
+        await self.aftv.adb_shell(
+            f"am start -n com.netflix.ninja/.MainActivity -a android.intent.action.VIEW -e amzn_deeplink_data {media_id}"
+        )
+
+    @adb_decorator()
+    async def async_play_media_amazon_prime_video(self, media_id):
+        media_id = media_id.replace("detail", "watch")
+        await self.aftv.adb_shell(
+            f"am start -a android.intent.action.VIEW -d '{media_id}'"
+        )
+
 
 class AndroidTVDevice(ADBDevice):
     """Representation of an Android TV device."""
@@ -460,6 +496,7 @@ class AndroidTVDevice(ADBDevice):
         | MediaPlayerEntityFeature.VOLUME_MUTE
         | MediaPlayerEntityFeature.VOLUME_SET
         | MediaPlayerEntityFeature.VOLUME_STEP
+        | MediaPlayerEntityFeature.PLAY_MEDIA
     )
 
     @adb_decorator(override_available=True)
@@ -493,7 +530,7 @@ class AndroidTVDevice(ADBDevice):
         if self._attr_state is None:
             self._attr_available = False
 
-        if running_apps:
+        if running_apps and self._source_provider == SOURCE_PROVIDER_RUNNING_APPS:
             self._attr_source = self._attr_app_name = self._app_id_to_name.get(
                 self._attr_app_id, self._attr_app_id
             )
@@ -504,8 +541,6 @@ class AndroidTVDevice(ADBDevice):
                 for app_id in running_apps
             ]
             self._attr_source_list = [source for source in sources if source]
-        else:
-            self._attr_source_list = None
 
     @adb_decorator()
     async def async_media_stop(self) -> None:
@@ -549,6 +584,7 @@ class FireTVDevice(ADBDevice):
         | MediaPlayerEntityFeature.NEXT_TRACK
         | MediaPlayerEntityFeature.SELECT_SOURCE
         | MediaPlayerEntityFeature.STOP
+        | MediaPlayerEntityFeature.PLAY_MEDIA
     )
 
     @adb_decorator(override_available=True)
@@ -573,13 +609,15 @@ class FireTVDevice(ADBDevice):
             self._attr_app_id,
             running_apps,
             self._attr_extra_state_attributes[ATTR_HDMI_INPUT],
-        ) = await self.aftv.update(self._get_sources)
+        ) = await self.aftv.update(
+            self._get_sources and self._source_provider == SOURCE_PROVIDER_RUNNING_APPS
+        )
 
         self._attr_state = ANDROIDTV_STATES.get(state)
         if self._attr_state is None:
             self._attr_available = False
 
-        if running_apps:
+        if running_apps and self._source_provider == SOURCE_PROVIDER_RUNNING_APPS:
             self._attr_source = self._app_id_to_name.get(
                 self._attr_app_id, self._attr_app_id
             )
@@ -590,8 +628,6 @@ class FireTVDevice(ADBDevice):
                 for app_id in running_apps
             ]
             self._attr_source_list = [source for source in sources if source]
-        else:
-            self._attr_source_list = None
 
     @adb_decorator()
     async def async_media_stop(self) -> None:

@@ -1438,7 +1438,7 @@ pysnooz==0.8.3
 pysoma==0.0.12
 
 # homeassistant.components.spc
-pyspcwebgw==0.4.0
+pyspcwebgw==0.6.0
 
 # homeassistant.components.squeezebox
 pysqueezebox==0.6.1
@@ -1855,6 +1855,9 @@ wallbox==0.4.12
 
 # homeassistant.components.folder_watcher
 watchdog==2.2.1
+
+# homeassistant.components.androidtv
+watchhub==2020.12.1
 
 # homeassistant.components.whirlpool
 whirlpool-sixth-sense==0.18.2
