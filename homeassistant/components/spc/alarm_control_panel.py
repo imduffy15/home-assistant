@@ -114,3 +114,9 @@ class SpcAlarm(alarm.AlarmControlPanelEntity):
         """Send arm away command."""
 
         await self._api.change_mode(area=self._area, new_mode=AreaMode.FULL_SET)
+
+    @property
+    def code_arm_required(self) -> bool:
+        """Whether the code is required for arm actions."""
+        return False
+
