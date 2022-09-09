@@ -1,0 +1,38 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Device is already configured",
+            "connection_error_during_import": "Connection error occured during yaml configuration import",
+            "reauth_successful": "Re-authentication was successful"
+        },
+        "error": {
+            "connection_error": "Failed to connect",
+            "invalid_auth": "Invalid authentication"
+        },
+        "flow_title": "Nextcloud",
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "password": "Password",
+                    "username": "Username"
+                },
+                "description": "Update your login information for {url}."
+            },
+            "user": {
+                "data": {
+                    "password": "Password",
+                    "url": "URL",
+                    "username": "Username",
+                    "verify_ssl": "Verify SSL certificate"
+                },
+                "description": "Enter your Nextcloud information."
+            }
+        }
+    },
+    "issues": {
+        "deprecated_yaml": {
+            "description": "Configuring Netxcloud using YAML has been deprecated.\n\nYour existing YAML configuration has been imported into the UI automatically.\n\nRemove the `nextcloud` YAML configuration from your configuration.yaml file and restart Home Assistant to fix this issue.",
+            "title": "The Netxcloud YAML configuration has been deprecated"
+        }
+    }
+}

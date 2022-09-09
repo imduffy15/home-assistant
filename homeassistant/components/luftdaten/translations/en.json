@@ -1,0 +1,39 @@
+{
+    "config": {
+        "error": {
+            "already_configured": "Service is already configured",
+            "cannot_connect": "Failed to connect",
+            "invalid_sensor": "Sensor not available or invalid"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "show_on_map": "Show on map",
+                    "station_id": "Sensor ID"
+                }
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "humidity": {
+                "name": "Humidity"
+            },
+            "pm10": {
+                "name": "Particulate matter 10 \u03bcm"
+            },
+            "pm25": {
+                "name": "Particulate matter 2.5 \u03bcm"
+            },
+            "pressure": {
+                "name": "Pressure"
+            },
+            "pressure_at_sealevel": {
+                "name": "Pressure at sealevel"
+            },
+            "temperature": {
+                "name": "Temperature"
+            }
+        }
+    }
+}

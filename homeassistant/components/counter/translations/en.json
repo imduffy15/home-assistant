@@ -1,0 +1,29 @@
+{
+    "entity_component": {
+        "_": {
+            "name": "Counter",
+            "state_attributes": {
+                "editable": {
+                    "name": "Managed via UI",
+                    "state": {
+                        "false": "No",
+                        "true": "Yes"
+                    }
+                },
+                "initial": {
+                    "name": "Initial value"
+                },
+                "maximum": {
+                    "name": "Maximum"
+                },
+                "minimum": {
+                    "name": "Minimum"
+                },
+                "step": {
+                    "name": "Step"
+                }
+            }
+        }
+    },
+    "title": "Counter"
+}

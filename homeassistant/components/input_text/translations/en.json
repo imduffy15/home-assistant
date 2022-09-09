@@ -1,0 +1,33 @@
+{
+    "entity_component": {
+        "_": {
+            "name": "Input text",
+            "state_attributes": {
+                "editable": {
+                    "name": "Managed via UI",
+                    "state": {
+                        "false": "No",
+                        "true": "Yes"
+                    }
+                },
+                "max": {
+                    "name": "Max length"
+                },
+                "min": {
+                    "name": "Min length"
+                },
+                "mode": {
+                    "name": "Mode",
+                    "state": {
+                        "password": "Password",
+                        "text": "Text"
+                    }
+                },
+                "pattern": {
+                    "name": "Pattern"
+                }
+            }
+        }
+    },
+    "title": "Input text"
+}

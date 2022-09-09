@@ -1,0 +1,17 @@
+{
+    "entity_component": {
+        "_": {
+            "name": "Input button",
+            "state_attributes": {
+                "editable": {
+                    "name": "Managed via UI",
+                    "state": {
+                        "false": "No",
+                        "true": "Yes"
+                    }
+                }
+            }
+        }
+    },
+    "title": "Input button"
+}

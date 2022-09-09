@@ -1,0 +1,33 @@
+{
+    "entity_component": {
+        "_": {
+            "name": "Timer",
+            "state": {
+                "active": "Active",
+                "idle": "Idle",
+                "paused": "Paused"
+            },
+            "state_attributes": {
+                "duration": {
+                    "name": "Duration"
+                },
+                "editable": {
+                    "name": "Managed via UI",
+                    "state": {
+                        "false": "No",
+                        "true": "Yes"
+                    }
+                },
+                "finishes_at": {
+                    "name": "Finishes at"
+                },
+                "remaining": {
+                    "name": "Remaining"
+                },
+                "restore": {
+                    "name": "Restore"
+                }
+            }
+        }
+    }
+}

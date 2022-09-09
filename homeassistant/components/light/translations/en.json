@@ -1,0 +1,90 @@
+{
+    "device_automation": {
+        "action_type": {
+            "brightness_decrease": "Decrease {entity_name} brightness",
+            "brightness_increase": "Increase {entity_name} brightness",
+            "flash": "Flash {entity_name}",
+            "toggle": "Toggle {entity_name}",
+            "turn_off": "Turn off {entity_name}",
+            "turn_on": "Turn on {entity_name}"
+        },
+        "condition_type": {
+            "is_off": "{entity_name} is off",
+            "is_on": "{entity_name} is on"
+        },
+        "trigger_type": {
+            "changed_states": "{entity_name} turned on or off",
+            "turned_off": "{entity_name} turned off",
+            "turned_on": "{entity_name} turned on"
+        }
+    },
+    "entity_component": {
+        "_": {
+            "name": "Light",
+            "state": {
+                "off": "Off",
+                "on": "On"
+            },
+            "state_attributes": {
+                "brightness": {
+                    "name": "Brightness"
+                },
+                "color_mode": {
+                    "name": "Color mode",
+                    "state": {
+                        "brightness": "Brightness only",
+                        "color_temp": "Color temperature",
+                        "hs": "HS",
+                        "onoff": "On/Off",
+                        "rgb": "RGB",
+                        "rgbw": "RGBW",
+                        "rgbww": "RGBWW",
+                        "unknown": "Unknown",
+                        "white": "White",
+                        "xy": "XY"
+                    }
+                },
+                "color_temp": {
+                    "name": "Color temperature (mireds)"
+                },
+                "color_temp_kelvin": {
+                    "name": "Color temperature (Kelvin)"
+                },
+                "effect": {
+                    "name": "Effect"
+                },
+                "effect_list": {
+                    "name": "Available effects"
+                },
+                "max_color_temp_kelvin": {
+                    "name": "Maximum color temperature (Kelvin)"
+                },
+                "max_mireds": {
+                    "name": "Maximum color temperature (mireds)"
+                },
+                "min_color_temp_kelvin": {
+                    "name": "Minimum color temperature (Kelvin)"
+                },
+                "min_mireds": {
+                    "name": "Minimum color temperature (mireds)"
+                },
+                "supported_color_modes": {
+                    "name": "Available color modes",
+                    "state": {
+                        "brightness": "Brightness only",
+                        "color_temp": "Color temperature",
+                        "hs": "HS",
+                        "onoff": "On/Off",
+                        "rgb": "RGB",
+                        "rgbw": "RGBW",
+                        "rgbww": "RGBWW",
+                        "unknown": "Unknown",
+                        "white": "White",
+                        "xy": "XY"
+                    }
+                }
+            }
+        }
+    },
+    "title": "Light"
+}
