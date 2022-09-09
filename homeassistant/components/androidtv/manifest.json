@@ -10,6 +10,7 @@
   "requirements": [
     "adb-shell[async]==0.4.3",
     "androidtv[async]==0.0.70",
-    "pure-python-adb[async]==0.3.0.dev0"
+    "pure-python-adb[async]==0.3.0.dev0",
+    "watchhub==2020.12.1"
   ]
 }
