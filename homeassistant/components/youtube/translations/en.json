@@ -1,0 +1,42 @@
+{
+    "config": {
+        "abort": {
+            "access_not_configured": "Please read the below message we got from Google:\n\n{message}",
+            "already_configured": "Account is already configured",
+            "reauth_successful": "Re-authentication was successful",
+            "unknown": "Unexpected error"
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "invalid_auth": "Invalid authentication"
+        },
+        "step": {
+            "channels": {
+                "data": {
+                    "channels": "YouTube channels"
+                },
+                "description": "Select the channels you want to add."
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "latest_upload": {
+                "name": "Latest upload"
+            },
+            "subscribers": {
+                "name": "Subscribers"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "channels": "YouTube channels"
+                },
+                "description": "Select the channels you want to add."
+            }
+        }
+    }
+}

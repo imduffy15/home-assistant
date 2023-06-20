@@ -1,0 +1,37 @@
+{
+    "entity_component": {
+        "_": {
+            "name": "Input number",
+            "state_attributes": {
+                "editable": {
+                    "name": "Managed via UI",
+                    "state": {
+                        "false": "No",
+                        "true": "Yes"
+                    }
+                },
+                "initial": {
+                    "name": "Initial value"
+                },
+                "max": {
+                    "name": "Maximum"
+                },
+                "min": {
+                    "name": "Minimum"
+                },
+                "mode": {
+                    "name": "Mode",
+                    "state": {
+                        "auto": "Automatic",
+                        "box": "Box",
+                        "slider": "Slider"
+                    }
+                },
+                "step": {
+                    "name": "Step"
+                }
+            }
+        }
+    },
+    "title": "Input number"
+}

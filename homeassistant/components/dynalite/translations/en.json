@@ -1,0 +1,24 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Device is already configured",
+            "cannot_connect": "Failed to connect"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Host",
+                    "port": "Port"
+                },
+                "description": "Gateway address to connect to DYNET network",
+                "title": "Configure Dynalite Connection"
+            }
+        }
+    },
+    "issues": {
+        "deprecated_yaml": {
+            "description": "Configuring Dynalite using YAML is being removed.\n\nYour existing YAML configuration has been imported into the UI automatically.\n\nRemove the Dynalite YAML configuration from your configuration.yaml file and restart Home Assistant to fix this issue.",
+            "title": "The Dynalite YAML configuration is being removed"
+        }
+    }
+}

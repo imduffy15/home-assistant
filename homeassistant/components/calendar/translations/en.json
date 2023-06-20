@@ -1,0 +1,42 @@
+{
+    "entity_component": {
+        "_": {
+            "name": "Calendar",
+            "state": {
+                "off": "Off",
+                "on": "On"
+            },
+            "state_attributes": {
+                "all_day": {
+                    "name": "All day",
+                    "state": {
+                        "false": "No",
+                        "true": "Yes"
+                    }
+                },
+                "description": {
+                    "name": "Description"
+                },
+                "end_time": {
+                    "name": "End time"
+                },
+                "location": {
+                    "name": "Location"
+                },
+                "messages": {
+                    "name": "Message"
+                },
+                "start_time": {
+                    "name": "Start time"
+                }
+            }
+        }
+    },
+    "issues": {
+        "platform_integration_no_support": {
+            "description": "The {platform} platform for the {domain} integration does not support platform setup.\n\nPlease remove it from your configuration and restart Home Assistant to fix this issue.",
+            "title": "Platform support not supported"
+        }
+    },
+    "title": "Calendar"
+}

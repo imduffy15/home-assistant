@@ -1,0 +1,16 @@
+{
+    "entity_component": {
+        "_": {
+            "name": "Image processing",
+            "state_attributes": {
+                "faces": {
+                    "name": "Faces"
+                },
+                "total_faces": {
+                    "name": "Total faces"
+                }
+            }
+        }
+    },
+    "title": "Image processing"
+}

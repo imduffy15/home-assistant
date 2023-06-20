@@ -1,0 +1,21 @@
+{
+    "entity_component": {
+        "_": {
+            "name": "Input boolean",
+            "state": {
+                "off": "Off",
+                "on": "On"
+            },
+            "state_attributes": {
+                "editable": {
+                    "name": "Managed via UI",
+                    "state": {
+                        "false": "No",
+                        "true": "Yes"
+                    }
+                }
+            }
+        }
+    },
+    "title": "Input boolean"
+}

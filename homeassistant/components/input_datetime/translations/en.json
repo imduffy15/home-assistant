@@ -1,0 +1,38 @@
+{
+    "entity_component": {
+        "_": {
+            "name": "Input datetime",
+            "state_attributes": {
+                "day": {
+                    "name": "Day"
+                },
+                "editable": {
+                    "name": "Managed via UI",
+                    "state": {
+                        "false": "No",
+                        "true": "Yes"
+                    }
+                },
+                "hour": {
+                    "name": "Hour"
+                },
+                "minute": {
+                    "name": "Minute"
+                },
+                "month": {
+                    "name": "Month"
+                },
+                "second": {
+                    "name": "Second"
+                },
+                "timestamp": {
+                    "name": "Timestamp"
+                },
+                "year": {
+                    "name": "Year"
+                }
+            }
+        }
+    },
+    "title": "Input datetime"
+}

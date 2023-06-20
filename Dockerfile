@@ -1,5 +1,4 @@
-ARG BUILD_FROM
-FROM ${BUILD_FROM}
+FROM ghcr.io/home-assistant/amd64-homeassistant-base:2023.06.0
 
 # Synchronize with homeassistant/core.py:async_stop
 ENV \
@@ -15,8 +14,6 @@ COPY homeassistant/package_constraints.txt homeassistant/homeassistant/
 RUN \
     pip3 install \
         --no-cache-dir \
-        --no-index \
-        --only-binary=:all: \
         --find-links "${WHEELS_LINKS}" \
         -r homeassistant/requirements.txt
 
@@ -25,13 +22,11 @@ RUN \
     if ls homeassistant/home_assistant_frontend*.whl 1> /dev/null 2>&1; then \
         pip3 install \
             --no-cache-dir \
-            --no-index \
             homeassistant/home_assistant_frontend-*.whl; \
     fi \
     && if ls homeassistant/home_assistant_intents*.whl 1> /dev/null 2>&1; then \
         pip3 install \
             --no-cache-dir \
-            --no-index \
             homeassistant/home_assistant_intents-*.whl; \
     fi \
     && \
@@ -39,8 +34,6 @@ RUN \
         MALLOC_CONF="background_thread:true,metadata_thp:auto,dirty_decay_ms:20000,muzzy_decay_ms:20000" \
         pip3 install \
             --no-cache-dir \
-            --no-index \
-            --only-binary=:all: \
             --find-links "${WHEELS_LINKS}" \
             -r homeassistant/requirements_all.txt
 
@@ -49,8 +42,6 @@ COPY . homeassistant/
 RUN \
     pip3 install \
         --no-cache-dir \
-        --no-index \
-        --only-binary=:all: \
         --find-links "${WHEELS_LINKS}" \
         -e ./homeassistant \
     && python3 -m compileall \
