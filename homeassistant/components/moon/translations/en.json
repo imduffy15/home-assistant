@@ -1,0 +1,30 @@
+{
+    "config": {
+        "abort": {
+            "single_instance_allowed": "Already configured. Only a single configuration possible."
+        },
+        "step": {
+            "user": {
+                "description": "Do you want to start setup?"
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "phase": {
+                "name": "Phase",
+                "state": {
+                    "first_quarter": "First quarter",
+                    "full_moon": "Full moon",
+                    "last_quarter": "Last quarter",
+                    "new_moon": "New moon",
+                    "waning_crescent": "Waning crescent",
+                    "waning_gibbous": "Waning gibbous",
+                    "waxing_crescent": "Waxing crescent",
+                    "waxing_gibbous": "Waxing gibbous"
+                }
+            }
+        }
+    },
+    "title": "Moon"
+}

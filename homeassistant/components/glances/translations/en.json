@@ -1,0 +1,31 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Device is already configured",
+            "reauth_successful": "Re-authentication was successful"
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "invalid_auth": "Invalid authentication"
+        },
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "password": "Password"
+                },
+                "description": "The password for {username} is invalid."
+            },
+            "user": {
+                "data": {
+                    "host": "Host",
+                    "password": "Password",
+                    "port": "Port",
+                    "ssl": "Uses an SSL certificate",
+                    "username": "Username",
+                    "verify_ssl": "Verify SSL certificate",
+                    "version": "Glances API Version (2 or 3)"
+                }
+            }
+        }
+    }
+}
