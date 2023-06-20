@@ -1,0 +1,34 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Service is already configured"
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "no_stations": "Could not find any station in range."
+        },
+        "step": {
+            "select_station": {
+                "data": {
+                    "station": "Station"
+                },
+                "description": "Found {stations_count} stations in radius",
+                "title": "Select the measuring station to add"
+            },
+            "user": {
+                "data": {
+                    "location": "Location",
+                    "radius": "Search radius (in km)"
+                },
+                "description": "Select the area, where you want to search for water measuring stations"
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "water_level": {
+                "name": "Water level"
+            }
+        }
+    }
+}

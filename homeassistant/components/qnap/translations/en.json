@@ -1,0 +1,23 @@
+{
+    "config": {
+        "error": {
+            "cannot_connect": "Cannot connect to host",
+            "invalid_auth": "Bad authentication",
+            "unknown": "Unknown error"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Hostname",
+                    "password": "Password",
+                    "port": "Port",
+                    "ssl": "Enable SSL",
+                    "username": "Username",
+                    "verify_ssl": "Verify SSL"
+                },
+                "description": "This qnap sensor allows getting various statistics from your QNAP NAS.",
+                "title": "Connect to the QNAP device"
+            }
+        }
+    }
+}
