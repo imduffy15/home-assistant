@@ -1,0 +1,39 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Device is already configured"
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "unknown": "Unexpected error"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Host",
+                    "password": "Password",
+                    "pin": "PIN code",
+                    "ssl": "Uses an SSL certificate",
+                    "username": "Username"
+                },
+                "data_description": {
+                    "host": "Hostname or IP address of your Venstar thermostat."
+                },
+                "description": "Connect to the Venstar thermostat"
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "schedule_part": {
+                "state": {
+                    "day": "Day",
+                    "evening": "Evening",
+                    "inactive": "Inactive",
+                    "morning": "Morning",
+                    "night": "Night"
+                }
+            }
+        }
+    }
+}
