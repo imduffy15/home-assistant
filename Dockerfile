@@ -45,7 +45,9 @@ RUN \
         --find-links "${WHEELS_LINKS}" \
         -e ./homeassistant \
     && python3 -m compileall \
-        homeassistant/homeassistant
+        homeassistant/homeassistant \
+    && apk add --update --no-cache libcap \
+    && setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/bin/python3.11
 
 # Home Assistant S6-Overlay
 COPY rootfs /
