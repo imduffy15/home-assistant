@@ -3,7 +3,8 @@
         "abort": {
             "already_configured": "Device is already configured",
             "reauth_successful": "Re-authentication was successful",
-            "unknown": "Unexpected error"
+            "unknown": "Unexpected error",
+            "unsupported_version": "Your version of System Bridge is not supported. Please upgrade to the latest version."
         },
         "error": {
             "cannot_connect": "Failed to connect",
@@ -14,21 +15,29 @@
         "step": {
             "authenticate": {
                 "data": {
-                    "api_key": "API key"
+                    "token": "API token"
                 },
-                "description": "Please enter the API Key you set in your configuration for {name}."
+                "description": "Please enter the token set in your configuration for {name}."
             },
             "user": {
                 "data": {
-                    "api_key": "API key",
                     "host": "Host",
-                    "port": "Port"
+                    "port": "Port",
+                    "token": "Token"
                 },
                 "description": "Please enter your connection details."
             }
         }
     },
     "entity": {
+        "binary_sensor": {
+            "camera_in_use": {
+                "name": "Camera in use"
+            },
+            "pending_reboot": {
+                "name": "Pending reboot"
+            }
+        },
         "media_player": {
             "media": {
                 "name": "Media"
@@ -85,7 +94,46 @@
             }
         }
     },
+    "exceptions": {
+        "process_not_found": {
+            "message": "Could not find process with id {id}."
+        }
+    },
+    "issues": {
+        "unsupported_version": {
+            "description": "Your version of System Bridge for host {host} is not supported.\n\nPlease upgrade to the latest version.",
+            "title": "System Bridge Upgrade Required"
+        }
+    },
     "services": {
+        "get_process_by_id": {
+            "description": "Gets a process by the ID.",
+            "fields": {
+                "bridge": {
+                    "description": "The server to talk to.",
+                    "name": "Bridge"
+                },
+                "id": {
+                    "description": "ID of the process to get.",
+                    "name": "ID"
+                }
+            },
+            "name": "Get process by ID"
+        },
+        "get_processes_by_name": {
+            "description": "Gets a list of processes by the name.",
+            "fields": {
+                "bridge": {
+                    "description": "The server to talk to.",
+                    "name": "Bridge"
+                },
+                "name": {
+                    "description": "Name of the process to get.",
+                    "name": "Name"
+                }
+            },
+            "name": "Get processes by name"
+        },
         "open_path": {
             "description": "Opens a file on the server using the default application.",
             "fields": {

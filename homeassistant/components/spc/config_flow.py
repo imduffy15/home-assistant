@@ -1,4 +1,5 @@
 """Config flow for SPC."""
+
 from __future__ import annotations
 
 import logging
@@ -40,7 +41,7 @@ async def _validate_input(
     )
 
     if not await spc.async_load_parameters():
-        raise SpcConnectionFailure()
+        raise SpcConnectionFailure
 
     return spc
 

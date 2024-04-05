@@ -1,11 +1,15 @@
-FROM ghcr.io/home-assistant/amd64-homeassistant-base:2024.02.1
+FROM ghcr.io/home-assistant/amd64-homeassistant-base:2024.03.0
 
 
 # Synchronize with homeassistant/core.py:async_stop
 ENV \
-    S6_SERVICES_GRACETIME=240000
+    S6_SERVICES_GRACETIME=240000 \
+    UV_SYSTEM_PYTHON=true
 
 ARG QEMU_CPU
+
+# Install uv
+RUN pip3 install uv==0.1.24
 
 WORKDIR /usr/src
 
@@ -13,33 +17,30 @@ WORKDIR /usr/src
 COPY requirements.txt homeassistant/
 COPY homeassistant/package_constraints.txt homeassistant/homeassistant/
 RUN \
-    pip3 install \
+    uv pip install \
         -r homeassistant/requirements.txt
 
 COPY requirements_all.txt home_assistant_frontend-* home_assistant_intents-* homeassistant/
 RUN \
-    if ls homeassistant/home_assistant_frontend*.whl 1> /dev/null 2>&1; then \
-        pip3 install homeassistant/home_assistant_frontend-*.whl; \
-    fi \
-    && if ls homeassistant/home_assistant_intents*.whl 1> /dev/null 2>&1; then \
-        pip3 install homeassistant/home_assistant_intents-*.whl; \
+    if ls homeassistant/home_assistant_*.whl 1> /dev/null 2>&1; then \
+        uv pip install homeassistant/home_assistant_*.whl; \
     fi \
     && if [ "${BUILD_ARCH}" = "i386" ]; then \
         LD_PRELOAD="/usr/local/lib/libjemalloc.so.2" \
         MALLOC_CONF="background_thread:true,metadata_thp:auto,dirty_decay_ms:20000,muzzy_decay_ms:20000" \
-        linux32 pip3 install \
+        linux32 uv pip install \
             -r homeassistant/requirements_all.txt; \
     else \
         LD_PRELOAD="/usr/local/lib/libjemalloc.so.2" \
         MALLOC_CONF="background_thread:true,metadata_thp:auto,dirty_decay_ms:20000,muzzy_decay_ms:20000" \
-        pip3 install \
+        uv pip install \
             -r homeassistant/requirements_all.txt; \
     fi
 
 ## Setup Home Assistant Core
 COPY . homeassistant/
 RUN \
-    pip3 install \
+    uv pip install \
         -e ./homeassistant \
     && python3 -m compileall \
         homeassistant/homeassistant

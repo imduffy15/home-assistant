@@ -109,6 +109,14 @@
         }
     },
     "issues": {
+        "deprecated_color_handling": {
+            "description": "An MQTT light config (with `json` schema) found in `configuration.yaml` uses deprecated color handling flags.\n\nConfiguration found:\n```yaml\n{config}\n```\nDeprecated flags: **{deprecated_flags}**.\n\nUse the `supported_color_modes` option instead and [reload](/developer-tools/yaml) the manually configured MQTT items or restart Home Assistant to fix this issue.",
+            "title": "Deprecated color handling used for MQTT light"
+        },
+        "deprecated_color_mode_flag": {
+            "description": "An MQTT light config (with `json` schema) found in `configuration.yaml` uses a deprecated `color_mode` flag.\n\nConfiguration found:\n```yaml\n{config}\n```\n\nRemove the option from your config and [reload](/developer-tools/yaml) the manually configured MQTT items or restart Home Assistant to fix this issue.",
+            "title": "Deprecated color_mode option flag used for MQTT light"
+        },
         "deprecation_mqtt_schema_vacuum_yaml": {
             "description": "The `schema` setting for MQTT vacuum entities is deprecated and should be removed. Please adjust your configuration.yaml and restart Home Assistant to fix this issue.",
             "title": "MQTT vacuum entities with deprecated `schema` config settings found in your configuration.yaml"

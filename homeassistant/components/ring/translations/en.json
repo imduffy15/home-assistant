@@ -37,12 +37,20 @@
                 "name": "Ding"
             }
         },
+        "button": {
+            "open_door": {
+                "name": "Open door"
+            }
+        },
         "light": {
             "light": {
                 "name": "Light"
             }
         },
         "sensor": {
+            "doorbell_volume": {
+                "name": "Doorbell volume"
+            },
             "last_activity": {
                 "name": "Last activity"
             },
@@ -51,6 +59,12 @@
             },
             "last_motion": {
                 "name": "Last motion"
+            },
+            "mic_volume": {
+                "name": "Mic volume"
+            },
+            "voice_volume": {
+                "name": "Voice volume"
             },
             "volume": {
                 "name": "Volume"
@@ -71,6 +85,19 @@
             "siren": {
                 "name": "Siren"
             }
+        }
+    },
+    "issues": {
+        "deprecated_service_ring_update": {
+            "fix_flow": {
+                "step": {
+                    "confirm": {
+                        "description": "Use `homeassistant.update_entity` instead which will update all ring entities.\n\nPlease replace calls to this service and adjust your automations and scripts and select **submit** to close this issue.",
+                        "title": "Detected use of deprecated service `ring.update`"
+                    }
+                }
+            },
+            "title": "Detected use of deprecated service `ring.update`"
         }
     },
     "services": {

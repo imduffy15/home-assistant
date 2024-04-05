@@ -112,9 +112,6 @@
         "weather": {
             "forecast": {
                 "name": "Forecast"
-            },
-            "hourly_forecast": {
-                "name": "Hourly forecast"
             }
         }
     },

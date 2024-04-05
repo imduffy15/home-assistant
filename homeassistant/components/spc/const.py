@@ -1,6 +1,5 @@
 """Constants for SPC."""
 
-
 CONF_WS_URL = "ws_url"
 CONF_API_URL = "api_url"
 

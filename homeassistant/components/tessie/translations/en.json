@@ -23,9 +23,6 @@
     },
     "entity": {
         "binary_sensor": {
-            "charge_state_battery_heater_on": {
-                "name": "Battery heater"
-            },
             "charge_state_charge_enable_request": {
                 "name": "Charge enable request"
             },
@@ -55,6 +52,9 @@
             },
             "climate_state_auto_steering_wheel_heat": {
                 "name": "Auto steering wheel heater"
+            },
+            "climate_state_battery_heater": {
+                "name": "Battery heater"
             },
             "climate_state_cabin_overheat_protection": {
                 "name": "Cabin overheat protection"
