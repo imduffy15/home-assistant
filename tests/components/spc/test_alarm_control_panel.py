@@ -9,8 +9,11 @@ from homeassistant.core import HomeAssistant
 from homeassistant.setup import async_setup_component
 
 
-async def test_update_alarm_device(hass: HomeAssistant, mock_client: AsyncMock) -> None:
+async def test_update_alarm_device(
+    hass: HomeAssistant, mock_clients: tuple[AsyncMock, AsyncMock]
+) -> None:
     """Test that alarm panel state changes on incoming websocket data."""
+    init_mock, config_flow_mock = mock_clients
 
     config = {"spc": {"api_url": "http://localhost/", "ws_url": "ws://localhost/"}}
     assert await async_setup_component(hass, "spc", config) is True
@@ -22,12 +25,12 @@ async def test_update_alarm_device(hass: HomeAssistant, mock_client: AsyncMock) 
     assert hass.states.get(entity_id).state == AlarmControlPanelState.ARMED_AWAY
     assert hass.states.get(entity_id).attributes["changed_by"] == "Sven"
 
-    mock_area = mock_client.return_value.areas["1"]
+    mock_area = init_mock.return_value.areas["1"]
 
     mock_area.mode = AreaMode.UNSET
     mock_area.last_changed_by = "Anna"
 
-    await mock_client.call_args_list[0][1]["async_callback"](mock_area)
+    await init_mock.call_args_list[0][1]["async_callback"](mock_area)
     await hass.async_block_till_done()
 
     assert hass.states.get(entity_id).state == AlarmControlPanelState.DISARMED
