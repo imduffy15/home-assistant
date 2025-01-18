@@ -829,7 +829,7 @@ jobs:
   prepare-pytest-full:
     runs-on: ubuntu-24.04
     if: |
-      (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
+      (github.event_name != 'push')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
@@ -886,7 +886,7 @@ jobs:
   pytest-full:
     runs-on: ubuntu-24.04
     if: |
-      (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
+      (github.event_name != 'push')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
@@ -1008,7 +1008,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         options: --health-cmd="mysqladmin ping -uroot -ppassword" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
-      (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
+      (github.event_name != 'push')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
@@ -1135,7 +1135,7 @@ jobs:
           POSTGRES_PASSWORD: password
         options: --health-cmd="pg_isready -hlocalhost -Upostgres" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
-      (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
+      (github.event_name != 'push')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
@@ -1282,7 +1282,7 @@ jobs:
   pytest-partial:
     runs-on: ubuntu-24.04
     if: |
-      (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
+      (github.event_name != 'push')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
