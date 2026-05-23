@@ -7,7 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  BASE_IMAGE: ghcr.io/home-assistant/amd64-homeassistant-base:2025.09.0
+  BASE_IMAGE: ghcr.io/home-assistant/amd64-homeassistant-base:2026.05.0
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: Generate translations
         run: |
