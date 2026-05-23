@@ -19,16 +19,21 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.14"
+          python-version-file: ".python-version"
+
+      - name: Install Home Assistant
+        run: |
+          python3 -m pip install "$(grep '^uv' < requirements.txt)"
+          uv pip install --system -r requirements.txt
+          uv pip install --system -e .
 
       - name: Generate translations
-        run: |
-          python -m script.translations develop --all
+        run: python3 -m script.translations develop --all
 
       - name: Install cosign
         if: github.event_name != 'pull_request'
