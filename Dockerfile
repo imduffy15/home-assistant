@@ -53,6 +53,10 @@ COPY --parents LICENSE* README* homeassistant/ pyproject.toml homeassistant/
 RUN \
     uv pip install \
         -e ./homeassistant \
+    # The custom Dreame integration uses cffi.FFI. Force the Python package
+    # and its native extension to the same wheel version; the inherited image
+    # otherwise pairs cffi 2.1.1 with _cffi_backend 2.0.0.
+    && pip3 install --force-reinstall --no-cache-dir "cffi==2.1.1" \
     && python3 -m compileall \
         homeassistant/homeassistant
 
