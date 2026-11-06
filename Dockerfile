@@ -53,6 +53,9 @@ COPY --parents LICENSE* README* homeassistant/ pyproject.toml homeassistant/
 RUN \
     uv pip install \
         -e ./homeassistant \
+    # Keep cffi's Python package and native extension on the release-pinned
+    # wheel. This prevents the mismatch that previously broke Dreame setup.
+    && pip3 install --force-reinstall --no-cache-dir "cffi==2.0.0" \
     && python3 -m compileall \
         homeassistant/homeassistant
 
